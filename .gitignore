@@ -1,0 +1,14 @@
+# --- BACKEND (Python) ---
+backend/venv/
+backend/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# --- FRONTEND (React/Node) ---
+frontend/node_modules/
+frontend/dist/
+
+# --- SEGURIDAD ---
+# Jamás subiremos nuestras contraseñas de base de datos a GitHub
+.env
