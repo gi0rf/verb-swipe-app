@@ -1,0 +1,49 @@
+/* frontend/src/components/VerbCard.module.css */
+.card {
+  border: 2px solid #4F46E5;
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #ffffff;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  position: relative; /* Ayuda a que framer-motion no distorsione el layout */
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px rgba(79, 70, 229, 0.15);
+}
+
+.front h2 {
+  font-size: 2rem;
+  color: #333;
+  margin: 0;
+}
+
+.front p {
+  color: #888;
+  margin-top: 1rem;
+}
+
+.back h2 {
+  font-size: 2.5rem;
+  color: #4F46E5;
+  margin: 0;
+}
+
+.back p {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.back hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 1rem 0;
+}

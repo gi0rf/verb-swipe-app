@@ -1,17 +1,16 @@
-// frontend/src/services/api.ts
-import type { VerbData } from '../types/types';
+import type { VerbData } from '../types/types.ts';
 
 const API_URL = 'http://127.0.0.1:8000/api';
 
 export const getVerbs = async (): Promise<VerbData[]> => {
   try {
     const response = await fetch(`${API_URL}/verbs/`);
-    if (!response.ok) throw new Error('Error al obtener los verbos');
-    
-    const data = await response.json();
-    return data;
+    if (!response.ok) {
+      throw new Error('Error al conectar con FastAPI');
+    }
+    return await response.json();
   } catch (error) {
-    console.error("Error de conexión:", error);
-    return []; // Devolvemos un arreglo vacío si el backend está apagado
+    console.error("Error en getVerbs:", error);
+    return [];
   }
 };

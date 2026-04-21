@@ -24,6 +24,9 @@ class Verb(Base):
     gerund = Column(String, nullable=False)
     example = Column(String, nullable=False)
     
+   
+    is_active = Column(Boolean, default=True) 
+    
     progress = relationship("UserVerbProgress", back_populates="verb")
 
 class UserVerbProgress(Base):
