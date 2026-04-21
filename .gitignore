@@ -11,4 +11,5 @@ frontend/dist/
 
 # --- SEGURIDAD ---
 # Jamás subiremos nuestras contraseñas de base de datos a GitHub
+backend/verb_swipe.db
 .env
