@@ -1,21 +1,20 @@
-# backend/app/db/database.py
+# backend/app/database.py
 from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-# URL de la base de datos local (SQLite). 
-# Cuando usemos Neon en producción, esta será la única línea que cambiaremos.
-SQLALCHEMY_DATABASE_URL = "sqlite:///./verb_swipe.db"
+# Aquí es donde se creará el archivo físico en tu Kali Linux
+SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
 
-# engine es el motor que se comunica con la base de datos
+# El 'check_same_thread' es necesario solo para SQLite
 engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, 
-    connect_args={"check_same_thread": False} # Esto solo se requiere para SQLite
+    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
 )
-
-# SessionLocal es la fábrica de "sesiones" o conexiones individuales
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Función inyectable (Dependency) que le dará una conexión a cada petición que llegue a tu API
+Base = declarative_base()
+
+# Esta es la función que tus rutas (como verbs.py) están intentando importar
 def get_db():
     db = SessionLocal()
     try:

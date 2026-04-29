@@ -1,7 +1,5 @@
-// frontend/src/App.tsx
 import { useState, useEffect } from 'react';
 import { VerbCard } from './components/VerbCard.tsx';
-import { getVerbs } from './services/api.ts';
 import type { VerbData } from './types/types.ts';
 
 function App() {
@@ -10,30 +8,42 @@ function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    const fetchDatos = async () => {
-      const data = await getVerbs();
+    const fetchDaily = async () => {
+      // Cambiamos a la nueva ruta que nos da solo los verbos del día
+      const response = await fetch('http://127.0.0.1:8000/api/verbs/daily');
+      const data = await response.json();
       setVerbs(data);
       setLoading(false);
     };
-    fetchDatos();
+    fetchDaily();
   }, []);
 
-  const handleSwipe = (direction: 'right' | 'left', verbId: number) => {
-    console.log(`Verbo ${verbId} deslizado a la ${direction}`);
+  const handleSwipe = async (direction: 'right' | 'left', verbId: number) => {
+    const isMastered = direction === 'right';
+
+    // 1. Notificar al Backend (Fuego y olvido o esperar respuesta)
+    try {
+      await fetch(`http://127.0.0.1:8000/api/verbs/${verbId}/swipe?mastered=${isMastered}`, {
+        method: 'POST'
+      });
+      console.log(`Backend actualizado: Verbo ${verbId} - Mastered: ${isMastered}`);
+    } catch (err) {
+      console.error("Error al guardar progreso:", err);
+    }
+
+    // 2. Animación y cambio de tarjeta
     setTimeout(() => {
       setCurrentIndex((prev) => prev + 1);
     }, 300);
   };
 
-  if (loading) return <p style={{textAlign: 'center'}}>Cargando...</p>;
+  if (loading) return <p style={{textAlign: 'center'}}>Cargando tu sesión de hoy...</p>;
 
   return (
-    <div style={{ padding: '2rem', maxWidth: '600px', margin: '0 auto', fontFamily: 'sans-serif' }}>
+    <div style={{ padding: '2rem', maxWidth: '600px', margin: '0 auto' }}>
       <h1 style={{ textAlign: 'center', color: '#4F46E5' }}>Verb Swipe 🧠</h1>
       
-      {verbs.length === 0 ? (
-        <p style={{ textAlign: 'center' }}>Base de datos vacía. Agrega verbos en FastAPI.</p>
-      ) : currentIndex < verbs.length ? (
+      {currentIndex < verbs.length ? (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <VerbCard 
             key={verbs[currentIndex].id}
@@ -46,9 +56,15 @@ function App() {
           />
         </div>
       ) : (
-        <div style={{ textAlign: 'center' }}>
-          <h2>¡Repaso completado! 🎉</h2>
-          <button onClick={() => setCurrentIndex(0)}>Reiniciar</button>
+        <div style={{ textAlign: 'center', background: '#f3f4f6', padding: '2rem', borderRadius: '12px' }}>
+          <h2>¡Todo listo por hoy! 🚀</h2>
+          <p>Has repasado todos tus verbos pendientes.</p>
+          <button 
+            onClick={() => window.location.reload()}
+            style={{ padding: '10px 20px', cursor: 'pointer' }}
+          >
+            ¿Repasar de nuevo?
+          </button>
         </div>
       )}
     </div>
