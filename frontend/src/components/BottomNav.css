@@ -1,0 +1,41 @@
+/* frontend/src/components/BottomNav.css */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background-color: #ffffff; /* Blanco limpio */
+  border-top: 1px solid var(--dust-grey);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-bottom: env(safe-area-inset-bottom);
+  z-index: 1000;
+  box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.nav-button {
+  background: none;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  padding: 8px;
+}
+
+.nav-button.active {
+  color: var(--cherry-blossom); /* Tu rosa brillante para indicar dónde estás */
+}
+
+.nav-button.inactive {
+  color: #a0aec0; /* Gris suave */
+}
+
+.nav-label {
+  font-size: 11px;
+  margin-top: 5px;
+  font-weight: 600;
+}
